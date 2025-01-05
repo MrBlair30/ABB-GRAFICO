@@ -123,17 +123,17 @@ public class ArbolGUI extends JFrame {
         //dibujar dato
         g.setColor(new Color(0xFFFFFF));
         g.setFont(new Font("Arial", Font.BOLD, 12));
-        if (nodo.getDato() >= 0 && nodo.getDato() <= 9) {
+        if ( (nodo.getDato() >= 0 && nodo.getDato() <= 9) || (nodo.getDato() >= -9 && nodo.getDato() <= 0) ) {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2, y + raizAltura / 2);
-        } else if (nodo.getDato() >= 10 && nodo.getDato() <= 99) {
+        } else if ( (nodo.getDato() >= 10 && nodo.getDato() <= 99) || (nodo.getDato() >= -99 && nodo.getDato() <= -10) ) {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2 - 5, y + raizAltura / 2);
-        } else if (nodo.getDato() >= 100 && nodo.getDato() <= 999) {
+        } else if ( (nodo.getDato() >= 100 && nodo.getDato() <= 999) || (nodo.getDato() >= -999 && nodo.getDato() <= -100) ) {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2 - 10, y + raizAltura / 2);
-        } else if (nodo.getDato() >= 100 && nodo.getDato() <= 999) {
+        } else if ( (nodo.getDato() >= 100 && nodo.getDato() <= 999) || (nodo.getDato() >= -999 && nodo.getDato() <= -100) ) {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2 - 15, y + raizAltura / 2);
-        } else if (nodo.getDato() >= 1000 && nodo.getDato() <= 9999) {
+        } else if ( (nodo.getDato() >= 1000 && nodo.getDato() <= 9999) || (nodo.getDato() >= -9999 && nodo.getDato() <= -1000) ) {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2 - 20, y + raizAltura / 2);
-        } else if (nodo.getDato() >= 10000 && nodo.getDato() <= 99999) {
+        } else if ( (nodo.getDato() >= 10000 && nodo.getDato() <= 99999) || (nodo.getDato() >= -99999 && nodo.getDato() <= -10000) ) {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2 - 25, y + raizAltura / 2);
         } else {
             g.drawString(String.valueOf(nodo.getDato()), x + raizAncho / 2 - 30, y + raizAltura / 2);
