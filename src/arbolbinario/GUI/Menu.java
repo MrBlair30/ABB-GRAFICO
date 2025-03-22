@@ -1,10 +1,10 @@
 package arbolbinario.GUI;
 
+import arbolavl.AVL;
+import arbolavl.NodoAVL;
 import arbolbinario.Arbol;
 import arbolbinario.Nodo;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -14,11 +14,14 @@ import javax.swing.*;
 public class Menu extends JFrame{
     BotonModificado btnBuscar,btnEliminar,btnModificar,btnRecorrer,btnVolver;
     Arbol arbol;
+    AVL arbolAVL;
     ArbolGUI arbolgui;
     Nodo datoEncontrado;    
+    NodoAVL datoEncontradoAVL;    
     
-    public Menu(Arbol arbolMenu, ArbolGUI arbolguiColor){
+    public Menu(Arbol arbolMenu, AVL arbolAVLMenu, ArbolGUI arbolguiColor){
         arbol = arbolMenu;
+        arbolAVL = arbolAVLMenu;
         arbolgui = arbolguiColor;
         setTitle("Menú de opciones");
         setSize(220,400);
@@ -53,16 +56,31 @@ public class Menu extends JFrame{
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
                 switch(eleccion){
                     case 0:
-                        System.out.println("Recorrido en Preorden");
-                        arbol.preorden();
+                        if(!arbolgui.balancear){
+                            System.out.println("Recorrido en Preorden");
+                            arbol.preorden();
+                        }else{
+                            System.out.println("Recorrido en Preorden");
+                            arbolAVL.preorden();
+                        }
                         break;
                     case 1:
-                        System.out.println("Recorrido en Inorden");
-                        arbol.inorden();                        
+                        if(!arbolgui.balancear){
+                            System.out.println("Recorrido en Inorden");
+                            arbol.inorden();
+                        }else{
+                            System.out.println("Recorrido en Inorden");
+                            arbolAVL.inorden();
+                        }                        
                         break;
                     case 2:
-                        System.out.println("Recorrido en Postorden");
-                        arbol.postorden();
+                        if(!arbolgui.balancear){
+                            System.out.println("Recorrido en Postorden");
+                            arbol.postorden();
+                        }else{
+                            System.out.println("Recorrido en Postorden");
+                            arbolAVL.postorden();
+                        }
                         break;
                     case 3:
                         break;
@@ -71,42 +89,79 @@ public class Menu extends JFrame{
 
     private void eliminar() {
         int datoAEliminar = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número que desea eliminar"));
-        Nodo nodoAEliminar = arbol.buscar(datoAEliminar);
-        if(nodoAEliminar!=null){            
-            arbol.eliminarPorNum(datoAEliminar);
-            Nodo nodoEliminado = arbol.buscar(datoAEliminar);
-            if(nodoEliminado==null){
-                JOptionPane.showMessageDialog(null, "Dato eliminado ["+datoAEliminar+"]");
+        if(!arbolgui.balancear){
+            Nodo nodoAEliminar = arbol.buscar(datoAEliminar);
+            if (nodoAEliminar != null) {
+                arbol.eliminarPorNum(datoAEliminar);
+                Nodo nodoEliminado = arbol.buscar(datoAEliminar);
+                if (nodoEliminado == null) {
+                    JOptionPane.showMessageDialog(null, "Dato eliminado [" + datoAEliminar + "]");
+                }
+                arbolgui.panel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe ese dato para ser modificado");
             }
-            arbolgui.panel.repaint();
         }else{
-            JOptionPane.showMessageDialog(null, "No existe ese dato para ser modificado");
+            NodoAVL nodoAEliminar = arbolAVL.buscar(datoAEliminar);
+            if (nodoAEliminar != null) {
+                arbolAVL.eliminar(datoAEliminar);
+                NodoAVL nodoEliminado = arbolAVL.buscar(datoAEliminar);
+                if (nodoEliminado == null) {
+                    JOptionPane.showMessageDialog(null, "Dato eliminado [" + datoAEliminar + "]");
+                }
+                arbolgui.panel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe ese dato para ser modificado");
+            }
         }
     }
 
     private void buscar() {
         int datoABuscar = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número que desea buscar"));
-        datoEncontrado = arbol.buscar(datoABuscar);
-        if(datoEncontrado!=null){
-            JOptionPane.showMessageDialog(null,"Se encontró el dato:\n"+datoEncontrado.getDato());
-            arbolgui.setNodoEncontrado(datoEncontrado);
-            arbolgui.pintarNodoEncontrado = true;
-            arbolgui.panel.repaint();
+        if(!arbolgui.balancear){
+            datoEncontrado = arbol.buscar(datoABuscar);
+            if (datoEncontrado != null) {
+                JOptionPane.showMessageDialog(null, "Se encontró el dato:\n" + datoEncontrado.getDato());
+                arbolgui.setNodoEncontrado(datoEncontrado);
+                arbolgui.pintarNodoEncontrado = true;
+                arbolgui.panel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "Dato no encontrado en el Árbol");
+            }
         }else{
-            JOptionPane.showMessageDialog(null,"Dato no encontrado en el Árbol");
+            datoEncontradoAVL = arbolAVL.buscar(datoABuscar);
+            if (datoEncontradoAVL != null) {
+                JOptionPane.showMessageDialog(null, "Se encontró el dato:\n" + datoEncontradoAVL.getDato());
+                arbolgui.setNodoEncontradoAVL(datoEncontradoAVL);
+                arbolgui.pintarNodoEncontrado = true;
+                arbolgui.panel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "Dato no encontrado en el Árbol");
+            }
         }
     }
 
     private void modificar() {
         int datoAModificar = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número que desea modificar"));
         int nuevoDato = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el nuevo número"));
-        boolean estaModificado = arbol.modificar(datoAModificar, nuevoDato);
-        if(estaModificado){
-            JOptionPane.showMessageDialog(null, "Dato modificado["+datoAModificar+"] por nuevo dato --> "+nuevoDato);
-            arbolgui.pintarNodoEncontrado = true;
-            arbolgui.panel.repaint();
+        if(!arbolgui.balancear){
+            boolean estaModificado = arbol.modificar(datoAModificar, nuevoDato);
+            if (estaModificado) {
+                JOptionPane.showMessageDialog(null, "Dato modificado[" + datoAModificar + "] por nuevo dato --> " + nuevoDato);
+                arbolgui.pintarNodoEncontrado = true;
+                arbolgui.panel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe ese dato para ser modificado");
+            }
         }else{
-            JOptionPane.showMessageDialog(null, "No existe ese dato para ser modificado");
+            boolean estaModificado = arbolAVL.modificar(datoAModificar, nuevoDato);
+            if (estaModificado) {
+                JOptionPane.showMessageDialog(null, "Dato modificado[" + datoAModificar + "] por nuevo dato --> " + nuevoDato);
+                arbolgui.pintarNodoEncontrado = true;
+                arbolgui.panel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe ese dato para ser modificado");
+            }
         }
     }
 

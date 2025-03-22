@@ -53,13 +53,16 @@ public class Arbol {
                     return;
                 }
                 aux = aux.getIzq();
-            } else if (dato >= aux.getDato()) {
+            } else if (dato > aux.getDato()) {
                 if (aux.getDer() == null) {
                     aux.setDer(nuevo);
                     System.out.println("Nuevo nodo insertado a la derecha de [" + aux.getDato() + "] --> " + dato);
                     return;
                 }
                 aux = aux.getDer();
+            }else{
+                System.out.println("No se pueden insertar nodos repetidos...");
+                return;
             }
         }
     }
